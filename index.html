@@ -2,421 +2,85 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Công Việc Cá Nhân</title>
-    <!-- Google Fonts & FontAwesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>Quản lý Hạng mục - Tổ Thí nghiệm Điện</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #4f46e5;
-            --primary-hover: #4338ca;
-            --bg-color: #f3f4f6;
-            --card-bg: #ffffff;
-            --text-main: #1f2937;
-            --text-secondary: #6b7280;
-            --danger: #ef4444;
-            --success: #10b981;
-            --warning: #f59e0b;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            padding: 40px 20px;
-            min-height: 100vh;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 700px;
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        .stats {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        /* Form nhập liệu */
-        .task-form {
-            display: grid;
-            grid-template-columns: 1fr auto auto auto;
-            gap: 10px;
-            margin-bottom: 24px;
-        }
-
-        @media (max-width: 600px) {
-            .task-form {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .task-input, .task-select, .task-date {
-            padding: 12px 16px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .task-input:focus, .task-select:focus, .task-date:focus {
-            border-color: var(--primary-color);
-        }
-
-        .btn-add {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            justify-content: center;
-        }
-
-        .btn-add:hover {
-            background-color: var(--primary-hover);
-        }
-
-        /* Bộ lọc trạng thái */
-        .filters {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 15px;
-        }
-
-        .filter-btn {
-            background: none;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            color: var(--text-secondary);
-            transition: all 0.2s;
-        }
-
-        .filter-btn.active {
-            background-color: #e0e7ff;
-            color: var(--primary-color);
-        }
-
-        /* Danh sách công việc */
-        .task-list {
-            list-style: none;
-            max-height: 450px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-
-        .task-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #f9fafb;
-            padding: 14px 18px;
-            border-radius: 10px;
-            margin-bottom: 12px;
-            border: 1px solid #e5e7eb;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .task-item:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-        }
-
-        .task-item.completed {
-            background: #f3f4f6;
-            opacity: 0.7;
-        }
-
-        .task-item.completed .task-title {
-            text-decoration: line-through;
-            color: var(--text-secondary);
-        }
-
-        .task-info {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        .task-checkbox {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            accent-color: var(--primary-color);
-        }
-
-        .task-details {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            overflow: hidden;
-        }
-
-        .task-title {
-            font-size: 15px;
-            font-weight: 500;
-            word-break: break-word;
-        }
-
-        .task-meta {
-            display: flex;
-            gap: 12px;
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        /* Huy hiệu mức độ ưu tiên */
-        .badge {
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 11px;
-            text-transform: uppercase;
-        }
-
-        .badge-high { background-color: #fee2e2; color: var(--danger); }
-        .badge-medium { background-color: #fef3c7; color: var(--warning); }
-        .badge-low { background-color: #d1fae5; color: var(--success); }
-
-        .task-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-action {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            padding: 6px;
-            border-radius: 6px;
-            transition: background 0.2s;
-        }
-
-        .btn-delete { color: var(--danger); }
-        .btn-delete:hover { background-color: #fee2e2; }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 0;
-            color: var(--text-secondary);
-            font-size: 15px;
-        }
+        :root { --primary: #2563eb; --bg: #f8fafc; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .grid-form { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px; margin-bottom: 20px; }
+        select, input { padding: 10px; border: 1px solid #ddd; border-radius: 6px; }
+        .task-item { display: flex; justify-content: space-between; padding: 12px; border-bottom: 1px solid #eee; align-items: center; }
+        .system-badge { font-size: 11px; padding: 3px 8px; border-radius: 4px; background: #e2e8f0; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1><i class="fa-solid fa-check-double"></i> Quản Lý Công Việc</h1>
-            <div class="stats" id="taskStats">Đã hoàn thành: 0/0</div>
-        </header>
+<div class="container">
+    <h2><i class="fa-solid fa-bolt"></i> Tổ Thí nghiệm Điện - Quản lý Hạng mục</h2>
+    
+    <form id="taskForm" class="grid-form">
+        <input type="text" id="taskInput" placeholder="Tên hạng mục..." required>
+        <select id="systemSelect">
+            <option value="S1">Tổ máy S1</option>
+            <option value="S2">Tổ máy S2</option>
+            <option value="S3">Tổ máy S3</option>
+            <option value="Common">Hệ thống chung</option>
+            <option value="Fuel">Hệ thống nhiên liệu</option>
+        </select>
+        <select id="priority">
+            <option value="High">Cao</option>
+            <option value="Medium">Trung bình</option>
+        </select>
+        <button type="submit" style="background:var(--primary); color:white; border:none; padding:10px 20px; border-radius:6px; cursor:pointer;">Thêm</button>
+    </form>
 
-        <!-- Form Thêm Công Việc -->
-        <form class="task-form" id="taskForm">
-            <input type="text" id="taskInput" class="task-input" placeholder="Nhập tên công việc mới..." required autocomplete="off">
-            <select id="taskPriority" class="task-select">
-                <option value="low">Thấp</option>
-                <option value="medium" selected>Trung bình</option>
-                <option value="high">Cao</option>
-            </select>
-            <input type="date" id="taskDate" class="task-date">
-            <button type="submit" class="btn-add">
-                <i class="fa-solid fa-plus"></i> Thêm
-            </button>
-        </form>
+    <div id="stats" style="margin-bottom: 20px; font-weight: 600; color: #475569;"></div>
 
-        <!-- Bộ Lọc -->
-        <div class="filters">
-            <button class="filter-btn active" data-filter="all">Tất cả</button>
-            <button class="filter-btn" data-filter="active">Đang làm</button>
-            <button class="filter-btn" data-filter="completed">Đã hoàn thành</button>
-        </div>
+    <div id="taskList"></div>
+</div>
 
-        <!-- Danh Sách Công Việc -->
-        <ul class="task-list" id="taskList">
-            <!-- Dữ liệu được render bằng JavaScript -->
-        </ul>
-    </div>
+<script>
+    let tasks = JSON.parse(localStorage.getItem('lab_tasks')) || [];
 
-    <script>
-        // Lấy các phần tử DOM
-        const taskForm = document.getElementById('taskForm');
-        const taskInput = document.getElementById('taskInput');
-        const taskPriority = document.getElementById('taskPriority');
-        const taskDate = document.getElementById('taskDate');
-        const taskList = document.getElementById('taskList');
-        const taskStats = document.getElementById('taskStats');
-        const filterButtons = document.querySelectorAll('.filter-btn');
+    document.getElementById('taskForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newTask = {
+            id: Date.now(),
+            text: document.getElementById('taskInput').value,
+            system: document.getElementById('systemSelect').value,
+            priority: document.getElementById('priority').value
+        };
+        tasks.push(newTask);
+        save();
+    });
 
-        // Khởi tạo danh sách công việc từ localStorage
-        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        let currentFilter = 'all';
+    function save() {
+        localStorage.setItem('lab_tasks', JSON.stringify(tasks));
+        render();
+    }
 
-        // Đặt mặc định ngày là hôm nay cho input date
-        taskDate.valueAsDate = new Date();
+    function render() {
+        const list = document.getElementById('taskList');
+        const stats = document.getElementById('stats');
+        list.innerHTML = tasks.map(t => `
+            <div class="task-item">
+                <div><strong>${t.text}</strong> <span class="system-badge">${t.system}</span></div>
+                <button onclick="deleteTask(${t.id})" style="color:red; border:none; cursor:pointer;">Xóa</button>
+            </div>
+        `).join('');
+        
+        // Thống kê nhanh
+        const count = tasks.reduce((acc, t) => { acc[t.system] = (acc[t.system] || 0) + 1; return acc; }, {});
+        stats.innerHTML = `Số lượng tồn tại: ${Object.entries(count).map(([k, v]) => `${k}: ${v}`).join(' | ')}`;
+    }
 
-        // Lắng nghe sự kiện thêm công việc
-        taskForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const text = taskInput.value.trim();
-            const priority = taskPriority.value;
-            const dueDate = taskDate.value;
+    function deleteTask(id) {
+        tasks = tasks.filter(t => t.id !== id);
+        save();
+    }
 
-            if (text) {
-                const newTask = {
-                    id: Date.now(),
-                    text,
-                    priority,
-                    dueDate,
-                    completed: false
-                };
-
-                tasks.unshift.apply(tasks, [newTask]); // Đưa lên đầu danh sách
-                saveAndRender();
-                taskInput.value = '';
-                taskDate.valueAsDate = new Date();
-            }
-        });
-
-        // Hàm lưu vào localStorage và render lại giao diện
-        function saveAndRender() {
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-            renderTasks();
-            updateStats();
-        }
-
-        // Hàm render danh sách công việc theo bộ lọc
-        function renderTasks() {
-            let filteredTasks = tasks.filter(task => {
-                if (currentFilter === 'active') return !task.completed;
-                if (currentFilter === 'completed') return task.completed;
-                return true;
-            });
-
-            if (filteredTasks.length === 0) {
-                taskList.innerHTML = `<li class="empty-state">Không có công việc nào.</li>`;
-                return;
-            }
-
-            taskList.innerHTML = filteredTasks.map(task => {
-                const priorityLabels = {
-                    low: { text: 'Thấp', class: 'badge-low' },
-                    medium: { text: 'Trung bình', class: 'badge-medium' },
-                    high: { text: 'Cao', class: 'badge-high' }
-                };
-
-                // Định dạng hiển thị ngày tháng
-                let formattedDate = '';
-                if (task.dueDate) {
-                    const dateObj = new Date(task.dueDate);
-                    formattedDate = dateObj.toLocaleDateString('vi-VN');
-                }
-
-                return `
-                    <li class="task-item ${task.completed ? 'completed' : ''}" data-id="${task.id}">
-                        <div class="task-info">
-                            <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})">
-                            <div class="task-details">
-                                <span class="task-title">${escapeHtml(task.text)}</span>
-                                <div class="task-meta">
-                                    <span class="badge ${priorityLabels[task.priority].class}">${priorityLabels[task.priority].text}</span>
-                                    ${formattedDate ? `<span><i class="fa-regular fa-calendar"></i> ${formattedDate}</span>` : ''}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="task-actions">
-                            <button class="btn-action btn-delete" onclick="deleteTask(${task.id})" title="Xóa">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </div>
-                    </li>
-                `;
-            }).join('');
-        }
-
-        // Chuyển đổi trạng thái hoàn thành công việc
-        function toggleTask(id) {
-            tasks = tasks.map(task => {
-                if (task.id === id) {
-                    return { ...task, completed: !task.completed };
-                }
-                return task;
-            });
-            saveAndRender();
-        }
-
-        // Xóa công việc
-        function deleteTask(id) {
-            tasks = tasks.filter(task => task.id !== id);
-            saveAndRender();
-        }
-
-        // Cập nhật thống kê tiến độ
-        function updateStats() {
-            const totalTasks = tasks.length;
-            const completedTasks = tasks.filter(task => task.completed).length;
-            taskStats.textContent = `Đã hoàn thành: ${completedTasks}/${totalTasks}`;
-        }
-
-        // Xử lý chuyển đổi bộ lọc
-        filterButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentFilter = btn.getAttribute('data-filter');
-                renderTasks();
-            });
-        });
-
-        // Bảo mật cơ bản chống XSS khi hiển thị text
-        function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
-
-        // Khởi chạy ứng dụng lần đầu
-        renderTasks();
-        updateStats();
-    </script>
+    render();
+</script>
 </body>
 </html>
